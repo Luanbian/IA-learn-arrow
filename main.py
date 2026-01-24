@@ -1,16 +1,22 @@
-from game import Renderer
+from game import Renderer, Player, Controller
 
 class GameApp:
     def __init__(self, width: int, height: int):
         self.renderer = Renderer(width, height)
+        self.player = Player(100, 100, 5, 'player.png')
+        self.controller = Controller()
 
     def run(self):
-        running = True
-        while running:
-            running = self.renderer.poll_events()
+        while self.renderer._running:
+            self.renderer.poll_events()
+
+            action = self.controller.get_actions()
+            self.player.apply_actions(action)
+
+            self.renderer.draw_player(self.player)
+            self.renderer.present()
 
         self.renderer.quit()
 
 
-app = GameApp(800, 600)
-app.run()
+GameApp(800, 600).run()

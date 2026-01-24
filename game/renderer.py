@@ -1,4 +1,5 @@
 import pygame
+from .player import Player
 
 class Renderer:
     def __init__(self, width: int, height: int):
@@ -15,3 +16,10 @@ class Renderer:
 
     def quit(self):
         pygame.quit()
+
+    def draw_player(self, player: Player):
+        player_asset = pygame.image.load(player.image).convert()
+        self.screen.blit(player_asset, (player.pos_x, player.pos_y))
+        
+    def present(self):
+        pygame.display.flip()
