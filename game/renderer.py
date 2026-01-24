@@ -1,13 +1,12 @@
 import pygame
 from .player import Player
-from .environment import FPS
+from .environment import (FPS, SCREEN_WIDTH, SCREEN_HEIGHT,TERRAIN_HEIGHT)
 
 class Renderer:
     def __init__(self, width: int, height: int):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
-        pygame.display.set_caption("Game Renderer")
         self._running = True
     
     def poll_events(self):
@@ -22,12 +21,15 @@ class Renderer:
     def draw_player(self, player: Player):
         player_asset = pygame.image.load(player.image).convert()
         self.screen.blit(player_asset, (player.pos_x, player.pos_y))
+    
+    def draw_terrain(self):
+        pygame.draw.rect(self.screen, (0, 255, 0), pygame.Rect(0, SCREEN_HEIGHT - TERRAIN_HEIGHT, SCREEN_WIDTH, TERRAIN_HEIGHT))
         
     def present(self):
         pygame.display.flip()
     
     def clear(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((255, 255, 255))
 
     def get_time(self):
         return self.clock.tick(FPS) / 1000.0

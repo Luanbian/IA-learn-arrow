@@ -23,6 +23,7 @@ class GameApp:
             delta = self.renderer.get_time()
 
             self.handle_events()
+            self.renderer.draw_terrain()
             self.render_player()
             self.apply_controller_actions()
 
@@ -41,8 +42,6 @@ class GameApp:
 
     def render_player(self):
         self.renderer.draw_player(self.player)
-        self.renderer.present()
-    
-
+        self.renderer.present()     
 
 GameApp().run()
