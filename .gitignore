@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtualenv
+.venv/
+venv/
+env/
+pyvenv.cfg
+
+# IDEs
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Build / runtime
+*.log
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+bin/
+lib/
+lib64
+include/
+
+# PyCharm
+*.iml
+
+# Coverage / tests
+.coverage
+htmlcov/
