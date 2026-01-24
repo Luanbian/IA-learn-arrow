@@ -1,7 +1,7 @@
 class Player:
-    def __init__(self, pos_x: int, pos_y: int, speed: int, image: str):
-        self.pos_x = pos_x
-        self.pos_y = pos_y
+    def __init__(self, pos: tuple, speed: int, image: str):
+        self.pos_x = pos[0]
+        self.pos_y = pos[1]
         self.speed = speed
         self.speed_y = 0.0
         self.image = f"assets/{image}"

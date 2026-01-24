@@ -1,9 +1,10 @@
 import pymunk
+from .environment import GRAVITY
 
 class Physics:
     def __init__(self):
         self.space = pymunk.Space()
-        self.space.gravity = (0, 980)
+        self.space.gravity = GRAVITY
 
 
     def add(self, adapter):

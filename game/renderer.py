@@ -1,5 +1,6 @@
 import pygame
 from .player import Player
+from .environment import FPS
 
 class Renderer:
     def __init__(self, width: int, height: int):
@@ -29,4 +30,4 @@ class Renderer:
         self.screen.fill((0, 0, 0))
 
     def get_time(self):
-        return self.clock.tick(60) / 1000.0
+        return self.clock.tick(FPS) / 1000.0
