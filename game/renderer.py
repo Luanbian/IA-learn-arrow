@@ -23,3 +23,6 @@ class Renderer:
         
     def present(self):
         pygame.display.flip()
+    
+    def clear(self):
+        self.screen.fill((0, 0, 0))
