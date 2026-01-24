@@ -32,12 +32,13 @@ class GameApp:
             delta = self.renderer.get_time()
 
             self.handle_events()
-            self.renderer.draw_terrain()
-            self.render_player()
             self.apply_controller_actions()
 
-            self.physics_body_adapter.sync_to_entity(self.player)
             self.physics.step(delta)
+            self.physics_body_adapter.sync_to_entity(self.player)
+
+            self.renderer.draw_terrain()
+            self.render_player()
 
         self.renderer.quit();
 
@@ -47,7 +48,10 @@ class GameApp:
     
     def apply_controller_actions(self):
         action = self.controller.get_actions()
+        speed_x = action.get("x", 0) * PLAYER_SPEED
         self.player.apply_actions(action)
+        cur_speed_y = self.physics_body_adapter.body.velocity.y
+        self.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
 
     def render_player(self):
         self.renderer.draw_player(self.player)
