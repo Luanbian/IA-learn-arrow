@@ -5,6 +5,7 @@ class Renderer:
     def __init__(self, width: int, height: int):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
+        self.clock = pygame.time.Clock()
         pygame.display.set_caption("Game Renderer")
         self._running = True
     
@@ -26,3 +27,6 @@ class Renderer:
     
     def clear(self):
         self.screen.fill((0, 0, 0))
+
+    def get_time(self):
+        return self.clock.tick(60) / 1000.0

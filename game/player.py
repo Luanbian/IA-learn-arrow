@@ -3,6 +3,7 @@ class Player:
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.speed = speed
+        self.speed_y = 0.0
         self.image = f"assets/{image}"
         
     def apply_actions(self, action: dict):
