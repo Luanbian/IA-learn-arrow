@@ -1,9 +1,13 @@
-from .physics_types import PhysicalBody
+import pymunk
 
 class Physics:
     def __init__(self):
-        self.gravity = 9.81
+        self.space = pymunk.Space()
+        self.space.gravity = (0, 980)
 
-    def apply_gravity(self, body: PhysicalBody, time: float):
-        body.speed_y += self.gravity * time
-        body.pos_y += body.speed_y * time
+
+    def add(self, adapter):
+        self.space.add(adapter.body, adapter.shape)
+
+    def step(self, dt: float):
+        self.space.step(dt)
