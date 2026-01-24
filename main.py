@@ -1,22 +1,31 @@
-from game import Renderer, Player, Controller, Physics, PhysicsAdapter
+from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain
 from game.environment import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     PLAYER_START_POS, PLAYER_MASS,
-    PLAYER_SIZE, PLAYER_SPEED,PLAYER_ASSET
+    PLAYER_SIZE, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
 )
 
 class GameApp:
     def __init__(self):
         self.renderer = Renderer(SCREEN_WIDTH, SCREEN_HEIGHT)
         self.physics = Physics()
+        self.controller = Controller()
+
         self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET)
-        self.physics_adapter = PhysicsAdapter(
+        self.physics_body_adapter = PhysicsBodyAdapter(
             mass=PLAYER_MASS,
             size=PLAYER_SIZE,
             position=PLAYER_START_POS
         )
-        self.physics.add(self.physics_adapter)
-        self.controller = Controller()
+        self.physics.add(self.physics_body_adapter)
+
+        self.terrain = Terrain(TERRAIN_HEIGHT)
+        self.physics_terrain_adapter = PhysicsTerrainAdapter(
+            pos_y=SCREEN_HEIGHT - TERRAIN_HEIGHT / 2,
+            width=SCREEN_WIDTH * 2,
+            height=TERRAIN_HEIGHT
+        )
+        self.physics.add(self.physics_terrain_adapter)
 
     def run(self):
         while self.renderer._running:
@@ -27,7 +36,7 @@ class GameApp:
             self.render_player()
             self.apply_controller_actions()
 
-            self.physics_adapter.sync_to_entity(self.player)
+            self.physics_body_adapter.sync_to_entity(self.player)
             self.physics.step(delta)
 
         self.renderer.quit();
