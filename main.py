@@ -49,6 +49,7 @@ class GameApp:
 
             self.renderer.draw_terrain()
             self.renderer.draw_projectile(self.projectile)
+            self.renderer.draw_info(self.player.angle, self.player.power)
             self.render_player()
 
         self.renderer.quit();
