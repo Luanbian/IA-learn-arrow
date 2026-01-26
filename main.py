@@ -56,16 +56,18 @@ class GameApp:
     def handle_events(self):
         self.renderer.clear()
         self.renderer.poll_events()
-    
+
     def apply_controller_actions(self):
         action = self.controller.get_actions()
-        speed_x = action.get("x", 0) * PLAYER_SPEED
         self.player.apply_actions(action)
+        speed_x = action.get("x", 0) * PLAYER_SPEED
         cur_speed_y = self.physics_body_adapter.body.velocity.y
         self.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
+        if action.get("shoot", False):
+            self.player.shoot(self.physics_projectile_adapter)
 
     def render_player(self):
         self.renderer.draw_player(self.player)
-        self.renderer.present()     
+        self.renderer.present()
 
 GameApp().run()
