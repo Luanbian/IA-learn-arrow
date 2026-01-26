@@ -28,8 +28,6 @@ class Player:
         if not self.isShooting:
             return
 
-        print(f"Shooting with angle: {self.angle} and power: {self.power}")
-
         angle_rad = math.radians(self.angle)
 
         velocity_x = self.power * math.cos(angle_rad)
