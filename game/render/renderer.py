@@ -1,5 +1,4 @@
 import pygame
-from ..entities.player import Player
 from constants.environment import (FPS, SCREEN_WIDTH, SCREEN_HEIGHT,TERRAIN_HEIGHT)
 
 class Renderer:
@@ -18,12 +17,15 @@ class Renderer:
     def quit(self):
         pygame.quit()
 
-    def draw_player(self, player: Player):
+    def draw_player(self, player):
         player_asset = pygame.image.load(player.image).convert()
         self.screen.blit(player_asset, (player.pos_x, player.pos_y))
     
     def draw_terrain(self):
         pygame.draw.rect(self.screen, (0, 255, 0), pygame.Rect(0, SCREEN_HEIGHT - TERRAIN_HEIGHT, SCREEN_WIDTH, TERRAIN_HEIGHT))
+    
+    def draw_projectile(self, projectile):
+        pygame.draw.circle(self.screen, (255, 0, 0), (int(projectile.pos_x), int(projectile.pos_y)), 10)
         
     def present(self):
         pygame.display.flip()

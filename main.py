@@ -1,4 +1,4 @@
-from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain
+from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain, PhysicsProjectileAdapter, Projectile
 from constants.environment import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     PLAYER_START_POS, PLAYER_MASS,
@@ -27,6 +27,15 @@ class GameApp:
         )
         self.physics.add(self.physics_terrain_adapter)
 
+        self.projectile = Projectile(PLAYER_START_POS)
+        self.physics_projectile_adapter = PhysicsProjectileAdapter(
+            mass=1,
+            radius=5,
+            position=PLAYER_START_POS,
+            velocity=(0, 0)
+        )
+        self.physics.add(self.physics_projectile_adapter)
+
     def run(self):
         while self.renderer._running:
             delta = self.renderer.get_time()
@@ -36,8 +45,10 @@ class GameApp:
 
             self.physics.step(delta)
             self.physics_body_adapter.sync_to_entity(self.player)
+            self.physics_projectile_adapter.sync_to_entity(self.projectile)
 
             self.renderer.draw_terrain()
+            self.renderer.draw_projectile(self.projectile)
             self.render_player()
 
         self.renderer.quit();
