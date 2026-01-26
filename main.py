@@ -1,5 +1,5 @@
 from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain
-from game.environment import (
+from constants.environment import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     PLAYER_START_POS, PLAYER_MASS,
     PLAYER_SIZE, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT

@@ -1,8 +1,8 @@
-from .player import Player
-from .renderer import Renderer
-from .controller import Controller
-from .physics import Physics
-from .physics_adapter import PhysicsBodyAdapter, PhysicsTerrainAdapter
-from .terrain import Terrain
+from .entities.player import Player
+from .entities.terrain import Terrain
+from .controllers.controller import Controller
+from .physics.physics import Physics
+from .physics.adapter.physics_adapter import PhysicsBodyAdapter, PhysicsTerrainAdapter
+from .render.renderer import Renderer
 
 __all__ = ["Player", "Renderer", "Controller", "Physics", "PhysicsBodyAdapter", "PhysicsTerrainAdapter", "Terrain"]

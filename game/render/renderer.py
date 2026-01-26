@@ -1,6 +1,6 @@
 import pygame
-from .player import Player
-from .environment import (FPS, SCREEN_WIDTH, SCREEN_HEIGHT,TERRAIN_HEIGHT)
+from ..entities.player import Player
+from constants.environment import (FPS, SCREEN_WIDTH, SCREEN_HEIGHT,TERRAIN_HEIGHT)
 
 class Renderer:
     def __init__(self, width: int, height: int):
