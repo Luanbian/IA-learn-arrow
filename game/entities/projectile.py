@@ -1,4 +1,5 @@
 from ..physics.adapter.physics_adapter import PhysicsProjectileAdapter
+from constants.environment import SCREEN_WIDTH
 
 class Projectile:
     def __init__(self, pos):
@@ -24,3 +25,9 @@ class ProjectileFactory:
         self.projectiles.append((projectile, adapter))
 
         return projectile
+
+    def cleanUp(self):
+        for projectile, adapter in self.projectiles[:]:
+            if adapter.body.position.x > SCREEN_WIDTH or adapter.body.position.x < 0:
+                self.physics.remove(adapter)
+                self.projectiles.remove((projectile, adapter))

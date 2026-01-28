@@ -27,9 +27,11 @@ class GameApp:
             self.physics.step(delta)
             self.player.physics_body_adapter.sync_to_entity(self.player)
 
-            for projectile, adapter in self.projectile_factory.projectiles:
+            for projectile, adapter in self.projectile_factory.projectiles[:]:
                 adapter.sync_to_entity(projectile)
                 self.renderer.draw_projectile(projectile)
+            
+            self.projectile_factory.cleanUp()
 
             self.renderer.draw_terrain()
             self.renderer.draw_info(self.player.angle, self.player.power)

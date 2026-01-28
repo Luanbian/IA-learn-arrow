@@ -9,5 +9,8 @@ class Physics:
     def add(self, adapter):
         self.space.add(adapter.body, adapter.shape)
 
+    def remove(self, adapter):
+        self.space.remove(adapter.body, adapter.shape)
+
     def step(self, dt: float):
         self.space.step(dt)
