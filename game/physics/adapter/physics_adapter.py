@@ -44,3 +44,14 @@ class PhysicsProjectileAdapter:
             self.body.velocity = (0, vy)
         else:
             self.body.velocity = (vx * 0.99, vy)
+
+class PhysicsRewardAdapter:
+    def __init__(self, position: tuple[float, float], radius: float):
+        self.body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
+        self.body.position = position
+
+        self.shape = pymunk.Circle(self.body, radius)
+
+        self.shape.elasticity = 0.9
+        self.shape.friction = 0.5
+        self.shape.collision_type = 2

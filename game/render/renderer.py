@@ -17,6 +17,9 @@ class Renderer:
     def draw_projectile(self, projectile):
         pygame.draw.circle(self.screen, (255, 0, 0), (int(projectile.pos_x), int(projectile.pos_y)), 10)
     
+    def draw_reward(self, reward):
+        pygame.draw.circle(self.screen, (0, 0, 255), (int(reward.pos_x), int(reward.pos_y)), 10)
+    
     def draw_info(self, angle, power):
         font = pygame.font.Font(None, 36)
         angle_text = font.render(f"Angle: {angle}", True, (255, 0, 0))

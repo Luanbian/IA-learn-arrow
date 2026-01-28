@@ -1,7 +1,6 @@
-from game import Renderer, Player, Controller, Physics, Terrain, ProjectileFactory
+from game import Renderer, Player, Controller, Physics, Terrain, ProjectileFactory, RewardFactory
 from constants.environment import (
-    SCREEN_WIDTH, SCREEN_HEIGHT,
-    PLAYER_START_POS, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
+    SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_START_POS, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
 )
 
 class GameApp:
@@ -11,6 +10,8 @@ class GameApp:
         self.controller = Controller()
 
         self.projectile_factory = ProjectileFactory(self.physics)
+        self.reward_factory = RewardFactory(self.physics)
+        self.reward_factory.create()
 
         self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET, self.projectile_factory, self.physics)
         self.player.create()
@@ -31,8 +32,10 @@ class GameApp:
                 adapter.sync_to_entity(projectile)
                 adapter.apply_rolling_resistance()
                 self.renderer.draw_projectile(projectile)
-            
             self.projectile_factory.cleanUp()
+
+            for reward, adapter in self.reward_factory.rewards[:]:
+                self.renderer.draw_reward(reward)
 
             self.renderer.draw_terrain()
             self.renderer.draw_info(self.player.angle, self.player.power)
