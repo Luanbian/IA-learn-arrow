@@ -18,7 +18,7 @@ class GameApp:
         self.terrain.create()
 
     def run(self):
-        while self.renderer._running:
+        while True:
             delta = self.renderer.get_time()
 
             self.handle_events()
@@ -37,11 +37,8 @@ class GameApp:
             self.renderer.draw_info(self.player.angle, self.player.power)
             self.render_player()
 
-        self.renderer.quit();
-
     def handle_events(self):
         self.renderer.clear()
-        self.renderer.poll_events()
 
     def apply_controller_actions(self):
         action = self.controller.get_actions()
@@ -52,7 +49,7 @@ class GameApp:
 
         self.player.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
 
-        if self.player.isShooting:
+        if action['shoot']:
             self.player.shoot()
 
     def render_player(self):

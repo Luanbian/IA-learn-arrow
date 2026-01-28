@@ -6,16 +6,6 @@ class Renderer:
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
-        self._running = True
-    
-    def poll_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self._running = False
-        return self._running
-
-    def quit(self):
-        pygame.quit()
 
     def draw_player(self, player):
         player_asset = pygame.image.load(player.image).convert()
