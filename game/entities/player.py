@@ -1,7 +1,9 @@
 import math
+from constants.environment import PLAYER_MASS, PLAYER_SIZE, PLAYER_START_POS
+from ..physics.adapter.physics_adapter import PhysicsBodyAdapter
 
 class Player:
-    def __init__(self, pos: tuple, speed: int, image: str, factory):
+    def __init__(self, pos, speed, image, factory, physics):
         self.pos_x = pos[0]
         self.pos_y = pos[1]
         self.speed = speed
@@ -11,7 +13,17 @@ class Player:
         self.image = f"assets/{image}"
         self.isShooting = False
         self.factory = factory
-        
+        self.physics = physics
+    
+    def create(self):
+        self.physics_body_adapter = PhysicsBodyAdapter(
+            mass=PLAYER_MASS,
+            size=PLAYER_SIZE,
+            position=PLAYER_START_POS
+        )
+        self.physics.add(self.physics_body_adapter)
+
+
     def apply_actions(self, action: dict):
         self.pos_x += action.get("x", 0) * self.speed
         self.pos_y += action.get("y", 0) * self.speed

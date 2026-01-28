@@ -1,8 +1,7 @@
-from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain, PhysicsProjectileAdapter, Projectile, ProjectileFactory
+from game import Renderer, Player, Controller, Physics, Terrain, ProjectileFactory
 from constants.environment import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
-    PLAYER_START_POS, PLAYER_MASS,
-    PLAYER_SIZE, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
+    PLAYER_START_POS, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
 )
 
 class GameApp:
@@ -13,21 +12,10 @@ class GameApp:
 
         self.projectile_factory = ProjectileFactory(self.physics)
 
-        self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET, self.projectile_factory)
-        self.physics_body_adapter = PhysicsBodyAdapter(
-            mass=PLAYER_MASS,
-            size=PLAYER_SIZE,
-            position=PLAYER_START_POS
-        )
-        self.physics.add(self.physics_body_adapter)
-
-        self.terrain = Terrain(TERRAIN_HEIGHT)
-        self.physics_terrain_adapter = PhysicsTerrainAdapter(
-            pos_y=SCREEN_HEIGHT - TERRAIN_HEIGHT / 2,
-            width=SCREEN_WIDTH * 2,
-            height=TERRAIN_HEIGHT
-        )
-        self.physics.add(self.physics_terrain_adapter)
+        self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET, self.projectile_factory, self.physics)
+        self.player.create()
+        self.terrain = Terrain(TERRAIN_HEIGHT, self.physics)
+        self.terrain.create()
 
     def run(self):
         while self.renderer._running:
@@ -37,7 +25,7 @@ class GameApp:
             self.apply_controller_actions()
 
             self.physics.step(delta)
-            self.physics_body_adapter.sync_to_entity(self.player)
+            self.player.physics_body_adapter.sync_to_entity(self.player)
 
             for projectile, adapter in self.projectile_factory.projectiles:
                 adapter.sync_to_entity(projectile)
@@ -56,12 +44,14 @@ class GameApp:
     def apply_controller_actions(self):
         action = self.controller.get_actions()
         self.player.apply_actions(action)
+
         speed_x = action.get("x", 0) * PLAYER_SPEED
-        cur_speed_y = self.physics_body_adapter.body.velocity.y
-        self.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
+        cur_speed_y = self.player.physics_body_adapter.body.velocity.y
+
+        self.player.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
+
         if self.player.isShooting:
             self.player.shoot()
-            self.player.isShooting = False
 
     def render_player(self):
         self.renderer.draw_player(self.player)
