@@ -36,9 +36,14 @@ class GameApp:
 
             for reward, adapter in self.reward_factory.rewards[:]:
                 self.renderer.draw_reward(reward)
+            
+            if self.physics.last_hit is not None:
+                self.player.earn_point()
+                self.reward_factory.create()
+                self.physics.last_hit = None
 
             self.renderer.draw_terrain()
-            self.renderer.draw_info(self.player.angle, self.player.power)
+            self.renderer.draw_info(self.player.angle, self.player.power, self.player.points)
             self.render_player()
 
     def handle_events(self):

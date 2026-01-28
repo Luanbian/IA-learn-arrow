@@ -10,6 +10,7 @@ class Player:
         self.speed_y = 0.0
         self.angle = 45
         self.power = 600
+        self.points = 0
         self.image = f"assets/{image}"
         self.factory = factory
         self.physics = physics
@@ -34,6 +35,9 @@ class Player:
 
     def change_power(self, delta):
         self.power = max(100, min(1200, self.power + delta))
+    
+    def earn_point(self):
+        self.points += 1
     
     def shoot(self):
         angle_rad = math.radians(self.angle)

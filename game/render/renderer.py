@@ -20,12 +20,14 @@ class Renderer:
     def draw_reward(self, reward):
         pygame.draw.circle(self.screen, (0, 0, 255), (int(reward.pos_x), int(reward.pos_y)), 10)
     
-    def draw_info(self, angle, power):
+    def draw_info(self, angle, power, points):
         font = pygame.font.Font(None, 36)
         angle_text = font.render(f"Angle: {angle}", True, (255, 0, 0))
         power_text = font.render(f"Power: {power}", True, (255, 0, 0))
+        points_text = font.render(f"Points: {points}", True, (255, 0, 0))
         self.screen.blit(angle_text, (10, 10))
         self.screen.blit(power_text, (10, 50))
+        self.screen.blit(points_text, (10, 90))
         
     def present(self):
         pygame.display.flip()

@@ -24,6 +24,11 @@ class RewardFactory:
             radius=20.0
         )
         self.physics.add(adapter)
-        self.rewards.append((reward, adapter))
+
+        if len(self.rewards) == 0:
+            self.rewards.append((reward, adapter))
+        else:
+            self.physics.remove(self.rewards[0][1])
+            self.rewards[0] = (reward, adapter)
 
         return reward

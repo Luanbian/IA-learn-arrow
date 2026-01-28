@@ -1,4 +1,5 @@
 import pymunk
+from constants.environment import REWARD_COLLISION, PROJECTILE_COLLISION
 
 class PhysicsBodyAdapter:
     def __init__(self, mass: float, size: tuple[int, int], position: tuple[float, float]):
@@ -32,6 +33,7 @@ class PhysicsProjectileAdapter:
         self.body.angular_damping = 0.9
         self.shape.friction = 1.5
         self.shape.elasticity = 0.0
+        self.shape.collision_type = PROJECTILE_COLLISION
 
     def sync_to_entity(self, entity):
         entity.pos_x = self.body.position.x
@@ -54,4 +56,4 @@ class PhysicsRewardAdapter:
 
         self.shape.elasticity = 0.9
         self.shape.friction = 0.5
-        self.shape.collision_type = 2
+        self.shape.collision_type = REWARD_COLLISION
