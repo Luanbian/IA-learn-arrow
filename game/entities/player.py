@@ -1,7 +1,7 @@
 import math
 
 class Player:
-    def __init__(self, pos: tuple, speed: int, image: str):
+    def __init__(self, pos: tuple, speed: int, image: str, factory):
         self.pos_x = pos[0]
         self.pos_y = pos[1]
         self.speed = speed
@@ -10,6 +10,7 @@ class Player:
         self.power = 600
         self.image = f"assets/{image}"
         self.isShooting = False
+        self.factory = factory
         
     def apply_actions(self, action: dict):
         self.pos_x += action.get("x", 0) * self.speed
@@ -24,7 +25,7 @@ class Player:
     def change_power(self, delta):
         self.power = max(100, min(1200, self.power + delta))
     
-    def shoot(self, projectile):
+    def shoot(self):
         if not self.isShooting:
             return
 
@@ -33,9 +34,6 @@ class Player:
         velocity_x = self.power * math.cos(angle_rad)
         velocity_y = -self.power * math.sin(angle_rad)
 
-        projectile.body.position = (self.pos_x, self.pos_y)
-        projectile.body.velocity = (velocity_x, velocity_y)
+        self.factory.create((self.pos_x, self.pos_y), (velocity_x, velocity_y))
 
         self.isShooting = False
-
-        

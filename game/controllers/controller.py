@@ -21,5 +21,5 @@ class Controller:
             actions["power"] -= 10
         if keys[pygame.K_SPACE]:
             actions["shoot"] = True
-            
+
         return actions

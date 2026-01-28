@@ -1,4 +1,4 @@
-from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain, PhysicsProjectileAdapter, Projectile
+from game import Renderer, Player, Controller, Physics, PhysicsBodyAdapter, PhysicsTerrainAdapter, Terrain, PhysicsProjectileAdapter, Projectile, ProjectileFactory
 from constants.environment import (
     SCREEN_WIDTH, SCREEN_HEIGHT,
     PLAYER_START_POS, PLAYER_MASS,
@@ -11,7 +11,9 @@ class GameApp:
         self.physics = Physics()
         self.controller = Controller()
 
-        self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET)
+        self.projectile_factory = ProjectileFactory(self.physics)
+
+        self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET, self.projectile_factory)
         self.physics_body_adapter = PhysicsBodyAdapter(
             mass=PLAYER_MASS,
             size=PLAYER_SIZE,
@@ -27,15 +29,6 @@ class GameApp:
         )
         self.physics.add(self.physics_terrain_adapter)
 
-        self.projectile = Projectile(PLAYER_START_POS)
-        self.physics_projectile_adapter = PhysicsProjectileAdapter(
-            mass=1,
-            radius=5,
-            position=PLAYER_START_POS,
-            velocity=(0, 0)
-        )
-        self.physics.add(self.physics_projectile_adapter)
-
     def run(self):
         while self.renderer._running:
             delta = self.renderer.get_time()
@@ -45,10 +38,12 @@ class GameApp:
 
             self.physics.step(delta)
             self.physics_body_adapter.sync_to_entity(self.player)
-            self.physics_projectile_adapter.sync_to_entity(self.projectile)
+
+            for projectile, adapter in self.projectile_factory.projectiles:
+                adapter.sync_to_entity(projectile)
+                self.renderer.draw_projectile(projectile)
 
             self.renderer.draw_terrain()
-            self.renderer.draw_projectile(self.projectile)
             self.renderer.draw_info(self.player.angle, self.player.power)
             self.render_player()
 
@@ -64,8 +59,9 @@ class GameApp:
         speed_x = action.get("x", 0) * PLAYER_SPEED
         cur_speed_y = self.physics_body_adapter.body.velocity.y
         self.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
-        if action.get("shoot", False):
-            self.player.shoot(self.physics_projectile_adapter)
+        if self.player.isShooting:
+            self.player.shoot()
+            self.player.isShooting = False
 
     def render_player(self):
         self.renderer.draw_player(self.player)
