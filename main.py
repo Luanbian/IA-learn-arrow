@@ -29,6 +29,7 @@ class GameApp:
 
             for projectile, adapter in self.projectile_factory.projectiles[:]:
                 adapter.sync_to_entity(projectile)
+                adapter.apply_rolling_resistance()
                 self.renderer.draw_projectile(projectile)
             
             self.projectile_factory.cleanUp()

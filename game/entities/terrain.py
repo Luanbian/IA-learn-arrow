@@ -9,7 +9,7 @@ class Terrain:
     def create(self):
         self.physics_terrain_adapter = PhysicsTerrainAdapter(
             pos_y=SCREEN_HEIGHT - self.height / 2,
-            width=SCREEN_WIDTH * 2,
+            width=SCREEN_WIDTH,
             height=self.height
         )
         self.physics.add(self.physics_terrain_adapter)
