@@ -7,24 +7,20 @@ class Controller:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    actions['shoot'] = True
+                    actions['shoot'] = True 
+                if event.key == pygame.K_LEFT:
+                    actions["x"] = -1
+                if event.key == pygame.K_RIGHT:
+                    actions["x"] = 1
+                if event.key == pygame.K_UP:
+                    actions["rotate"] += 1
+                if event.key == pygame.K_DOWN:
+                    actions["rotate"] -= 1
+                if event.key == pygame.K_w:
+                    actions["power"] += 10
+                if event.key == pygame.K_s:
+                    actions["power"] -= 10
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     exit()
-
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_LEFT]:
-            actions["x"] = -1
-        if keys[pygame.K_RIGHT]:
-            actions["x"] = 1
-        if keys[pygame.K_UP]:
-            actions["rotate"] += 1
-        if keys[pygame.K_DOWN]:
-            actions["rotate"] -= 1
-        if keys[pygame.K_w]:
-            actions["power"] += 10
-        if keys[pygame.K_s]:
-            actions["power"] -= 10
-
         return actions
