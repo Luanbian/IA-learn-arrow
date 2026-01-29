@@ -23,12 +23,11 @@ class PhysicsTerrainAdapter:
         self.shape.friction = 1.0
 
 class PhysicsProjectileAdapter:
-    def __init__(self, mass: float, radius: float, position: tuple[float, float], velocity: tuple[float, float]):
+    def __init__(self, mass: float, radius: float, position: tuple[float, float]):
         moment = pymunk.moment_for_circle(mass, 0, radius)
         self.body = pymunk.Body(mass, moment)
         self.shape = pymunk.Circle(self.body, radius)
         self.body.position = position
-        self.body.velocity = velocity
         self.body.damping = 0.999
         self.body.angular_damping = 0.9
         self.shape.friction = 1.5

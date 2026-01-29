@@ -1,68 +1,42 @@
-from game import Renderer, Player, Controller, Physics, Terrain, ProjectileFactory, RewardFactory
-from constants.environment import (
-    SCREEN_WIDTH, SCREEN_HEIGHT, PLAYER_START_POS, PLAYER_SPEED,PLAYER_ASSET, TERRAIN_HEIGHT
-)
+from game.render.renderer import Renderer
+from game.controllers.controller import Controller
+from game.world import GameWorld
+from constants.environment import SCREEN_WIDTH, SCREEN_HEIGHT
 
 class GameApp:
     def __init__(self):
         self.renderer = Renderer(SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.physics = Physics()
         self.controller = Controller()
-
-        self.projectile_factory = ProjectileFactory(self.physics)
-        self.reward_factory = RewardFactory(self.physics)
-        self.reward_factory.create()
-
-        self.player = Player(PLAYER_START_POS, PLAYER_SPEED, PLAYER_ASSET, self.projectile_factory, self.physics)
-        self.player.create()
-        self.terrain = Terrain(TERRAIN_HEIGHT, self.physics)
-        self.terrain.create()
+        self.world = GameWorld()
 
     def run(self):
         while True:
             delta = self.renderer.get_time()
+            action = self.controller.get_actions()
 
-            self.handle_events()
-            self.apply_controller_actions()
+            self.world.step(delta, action)
 
-            self.physics.step(delta)
-            self.player.physics_body_adapter.sync_to_entity(self.player)
+            self.render()
 
-            for projectile, adapter in self.projectile_factory.projectiles[:]:
-                adapter.sync_to_entity(projectile)
-                adapter.apply_rolling_resistance()
-                self.renderer.draw_projectile(projectile)
-            self.projectile_factory.cleanUp()
-
-            for reward, adapter in self.reward_factory.rewards[:]:
-                self.renderer.draw_reward(reward)
-            
-            if self.physics.last_hit is not None:
-                self.player.earn_point()
-                self.reward_factory.create()
-                self.physics.last_hit = None
-
-            self.renderer.draw_terrain()
-            self.renderer.draw_info(self.player.angle, self.player.power, self.player.points)
-            self.render_player()
-
-    def handle_events(self):
+    def render(self):
         self.renderer.clear()
+        self.renderer.draw_terrain()
 
-    def apply_controller_actions(self):
-        action = self.controller.get_actions()
-        self.player.apply_actions(action)
+        player = self.world.player
+        self.renderer.draw_player(player)
 
-        speed_x = action.get("x", 0) * PLAYER_SPEED
-        cur_speed_y = self.player.physics_body_adapter.body.velocity.y
+        for projectile, _ in self.world.projectile_factory.projectiles:
+            self.renderer.draw_projectile(projectile)
 
-        self.player.physics_body_adapter.body.velocity = (speed_x, cur_speed_y)
+        for reward, _ in self.world.reward_factory.rewards:
+            self.renderer.draw_reward(reward)
 
-        if action['shoot']:
-            self.player.shoot()
+        self.renderer.draw_info(
+            player.angle,
+            player.power,
+            player.points
+        )
 
-    def render_player(self):
-        self.renderer.draw_player(self.player)
         self.renderer.present()
 
 GameApp().run()

@@ -20,7 +20,6 @@ class ProjectileFactory:
             mass=1,
             radius=8,
             position=pos,
-            velocity=velocity
         )
 
         self.physics.add(adapter)

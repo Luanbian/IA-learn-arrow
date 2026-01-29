@@ -1,5 +1,6 @@
 import pymunk
 from constants.environment import GRAVITY, PROJECTILE_COLLISION, REWARD_COLLISION
+from game.events import GameEvent, GameEventType
 
 class Physics:
     def __init__(self):
@@ -9,7 +10,7 @@ class Physics:
         self.space.sleep_time_threshold = 0.5
         self.space.idle_speed_threshold = 5
         self.space.on_collision(PROJECTILE_COLLISION, REWARD_COLLISION, begin=self.on_hit)
-        self.last_hit = None
+        self.events = []
 
     def add(self, adapter):
         self.space.add(adapter.body, adapter.shape)
@@ -21,5 +22,10 @@ class Physics:
         self.space.step(dt)
     
     def on_hit(self, arbiter, space, data):
-        self.last_hit = arbiter
+        self.events.append(GameEvent(GameEventType.PROJECTILE_HIT_REWARD))
         return False
+
+    def consume_events(self):
+        events = self.events[:]
+        self.events.clear()
+        return events

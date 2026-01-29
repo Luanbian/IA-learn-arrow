@@ -25,10 +25,13 @@ class Player:
 
 
     def apply_actions(self, action: dict):
-        self.pos_x += action.get("x", 0) * self.speed
-        self.pos_y += action.get("y", 0) * self.speed
         self.rotate(action.get("rotate", 0))
         self.change_power(action.get("power", 0))
+
+    def sync_from_physics(self):
+        body = self.physics_body_adapter.body
+        self.pos_x = body.position.x
+        self.pos_y = body.position.y
 
     def rotate(self, delta):
         self.angle = max(5, min(85, self.angle + delta))
