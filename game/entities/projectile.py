@@ -21,6 +21,7 @@ class ProjectileFactory:
             radius=8,
             position=pos,
         )
+        adapter.body.velocity = velocity
 
         self.physics.add(adapter)
         self.projectiles.append((projectile, adapter))

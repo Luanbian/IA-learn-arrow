@@ -8,6 +8,8 @@ class PhysicsBodyAdapter:
         self.body.position = position
 
         self.shape = pymunk.Poly.create_box(self.body, size)
+        self.shape.friction = 1.5
+        self.shape.elasticity = 0.0
 
     def sync_to_entity(self, entity):
         entity.pos_x = self.body.position.x

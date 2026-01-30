@@ -36,6 +36,9 @@ class GameWorld:
 
         self.player.sync_from_physics()
 
+        for projectile, adapter in self.projectile_factory.projectiles:
+            adapter.sync_to_entity(projectile)
+
         reward = 0.0
         for event in self.physics.consume_events():
             reward += self.rules.handle_events(event)

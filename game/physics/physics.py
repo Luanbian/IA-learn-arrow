@@ -23,7 +23,7 @@ class Physics:
     
     def on_hit(self, arbiter, space, data):
         self.events.append(GameEvent(GameEventType.PROJECTILE_HIT_REWARD))
-        return False
+        return True
 
     def consume_events(self):
         events = self.events[:]
